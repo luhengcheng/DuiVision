@@ -117,7 +117,7 @@ CDuiEdit::CDuiEdit(HWND hWnd, CDuiObject* pDuiObject)
 	m_nMaxChar = -1;
 
 	m_bIsSmallButton = FALSE;
-	m_bFocus = FALSE;//解决没有div容器的edit焦点问题 by lhc 20180903
+	m_bIsFocus = FALSE;//解决没有div容器的edit焦点问题 by lhc 20180903
 }
 
 CDuiEdit::CDuiEdit(HWND hWnd, CDuiObject* pDuiObject, UINT uControlID, CRect rc, CString strTitle/* = ""*/,
@@ -155,7 +155,7 @@ CDuiEdit::CDuiEdit(HWND hWnd, CDuiObject* pDuiObject, UINT uControlID, CRect rc,
 	m_nMaxChar = -1;
 
 	m_bIsSmallButton = FALSE;
-	m_bFocus = FALSE;//解决没有div容器的edit焦点问题 by lhc 20180903
+	m_bIsFocus = FALSE;//解决没有div容器的edit焦点问题 by lhc 20180903
 }
 
 CDuiEdit::~CDuiEdit(void)
@@ -489,7 +489,7 @@ void CDuiEdit::SetFont(CString strFont, int nFontWidth, FontStyle fontStyle)
 // 设置控件的焦点
 BOOL CDuiEdit::SetControlFocus(BOOL bFocus)
 {
-	m_bFocus = TRUE; //解决没有div容器的edit焦点问题 by lhc 20180903
+	m_bIsFocus = TRUE; //解决没有div容器的edit焦点问题 by lhc 20180903
 	__super::SetControlFocus(bFocus);
 
 	enumButtonState buttonState = m_buttonState;
@@ -501,7 +501,7 @@ BOOL CDuiEdit::SetControlFocus(BOOL bFocus)
 		m_buttonState = enBSNormal;
 		m_EditState = enBSNormal;
 		HideEdit();
-		m_bFocus = FALSE;//解决没有div容器的edit焦点问题 by lhc 20180903
+		m_bIsFocus = FALSE;//解决没有div容器的edit焦点问题 by lhc 20180903
 	}else
 	{
 		m_bDown = true;
@@ -568,10 +568,10 @@ BOOL CDuiEdit::OnControlMouseMove(UINT nFlags, CPoint point)
 
 BOOL CDuiEdit::OnControlLButtonDown(UINT nFlags, CPoint point)
 {
-	if (!m_bFocus)//解决没有div容器的edit焦点问题 by lhc 20180903
+	if (!m_bIsFocus)//解决没有div容器的edit焦点问题 by lhc 20180903
 	{
-		SetControlFocus(m_bFocus);
-		m_bFocus = FALSE;
+		SetControlFocus(m_bIsFocus);
+		m_bIsFocus = FALSE;
 	}
 
 
@@ -612,6 +612,7 @@ BOOL CDuiEdit::OnControlLButtonDown(UINT nFlags, CPoint point)
 					m_bDown = false;
 					m_buttonState = enBSHover;
 				}
+				//HideEdit();
 				ShowEdit();
 				
 				SendMessage(MSG_CONTROL_BUTTON, CONTROL_EDIT, MSG_BUTTON_DOWN);
